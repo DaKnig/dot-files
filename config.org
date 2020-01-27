@@ -1,3 +1,4 @@
+
 * notes
 ** editing
 *** insert code block
@@ -7,6 +8,16 @@ C-c '
 ** formatting
 *bold* /italic/ +thing+ =s=
 
+* small configs
+** turn bell off
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+** line numbers
+#+BEGIN_SRC emacs-lisp
+  (when (version<= "26.0.50" emacs-version )
+	(global-display-line-numbers-mode))
+#+END_SRC
 * tab size
 #+BEGIN_SRC emacs-lisp
     (setq c-default-style "linux")
@@ -15,8 +26,10 @@ C-c '
     (setq-default c-basic-offset 4)
     (setq-default tab-width 4)
 #+END_SRC
-* normal keybindings for copy-paste
-** aka cue mode
+
+* custom keys
+** normal keybindings for copy-paste
+*** aka cue mode
 #+BEGIN_SRC emacs-lisp
 	(setq org-replace-disputed-keys t);;https://www.gnu.org/software/emacs/manual/html_node/org/Conflicts.html
 	 ;;this is supposed to move org-mode keys somewhere. doesnt work.
@@ -27,7 +40,6 @@ C-c '
 
 	(setq org-support-shift-select t) ;;Select text with the arrows
 #+END_SRC
-* custom keys
 ** set C-f , C-S-f (for search forwards and backwards)
 #+BEGIN_SRC emacs-lisp
     (global-unset-key (kbd "C-f"))
@@ -42,14 +54,15 @@ C-c '
   (global-unset-key (kbd "C-s"))
   (global-unset-key (kbd "C-S-s"))
   (global-unset-key (kbd "C-o"))
+
   (global-set-key (kbd "C-s") 'save-buffer)
+
   (global-set-key (kbd "C-o") 'find-file)
 
   (defadvice find-file-read-args (around find-file-read-args-always-use-dialog-box act)
 	"Simulate invoking menu item as if by the mouse; see `use-dialog-box'."
 	(let ((last-nonmenu-event nil))
 	  ad-do-it))
-  ;	(global-set-key (kbd "C-o" 
 #+END_SRC
 
 * setup package manager
@@ -95,4 +108,22 @@ _best used with caps-ctrl_
 #+BEGIN_SRC emacs-lisp
   (global-unset-key (kbd "C-/"))
   (global-set-key (kbd "C-/") 'avy-goto-char)
+#+END_SRC
+* window managing
+** setup for tabs
+*** close tab
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-w"))
+  (global-set-key (kbd "C-w") 'delete-window) ; close window (or "tab")
+#+END_SRC
+*** split window right
+#+BEGIN_SRC emacs-lisp
+(global-unset-key (kbd "C-\\" ))
+(global-set-key (kbd "C-\\") 'split-window-right)
+
+;other-window
+(global-unset-key (kbd "<C-tab>"))
+(global-set-key (kbd "<C-tab>") 'other-window)
+(define-key org-mode-map (kbd "<C-tab>") 'other-window)
+
 #+END_SRC
