@@ -54,6 +54,10 @@ C-c '
 *bold* /italic/ +thing+ =s=
 
 * small configs
+** smooth scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-step 1)
+#+END_SRC
 ** remove startup page
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
@@ -72,6 +76,10 @@ C-c '
   (when (fboundp 'electric-indent-mode)
     (electric-indent-mode -1))
 #+END_SRC
+** restore buffers
+#+BEGIN_SRC emacs-lisp
+  (desktop-save-mode 1)
+#+END_SRC
 * dashboard (proper startup page)
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
@@ -79,7 +87,7 @@ C-c '
     :config
     (dashboard-setup-startup-hook)
     (setq dashboard-startup-banner 2)
-    (setq dashboard-items '((recents  . 15)))
+    (setq dashboard-items '((recents  . 30)))
   ;			  (bookmarks . 5)
   ;			  (projects . 5)
   ;			  (agenda . 5)
@@ -134,6 +142,11 @@ C-c '
 	  ad-do-it))
 #+END_SRC
 
+** set C-M-f to replace regex
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-M-f"))
+  (global-set-key (kbd "C-M-f") 'query-replace-regexp)
+#+END_SRC
 * theme - custom colors
 ** monokai
 #+BEGIN_SRC emacs-lisp
@@ -176,9 +189,11 @@ _best used with caps-ctrl_
 
   ;other-window
   (global-unset-key (kbd "<C-tab>"))
-  (global-set-key (kbd "<C-tab>") 'other-window)
-  (define-key org-mode-map (kbd "<C-tab>") 'other-window)
+  (global-set-key (kbd "<C-tab>") 'next-multiframe-window)
+  (define-key org-mode-map (kbd "<C-tab>") 'next-multiframe-window)
 
+  (global-unset-key (kbd "<C-iso-lefttab>")) ; shift-tab
+  (global-set-key (kbd "<C-iso-lefttab>") 'previous-multiframe-window)
 #+END_SRC
 * tab
 *it is disabled*
@@ -289,4 +304,13 @@ binding to Enter in python mode
 #+BEGIN_SRC emacs-lisp
   (define-key company-active-map (kbd "<delete>") 'speedbar-item-delete)
   (global-set-key (kbd "C-b") 'speedbar)
+#+END_SRC
+* LaTeX setup
+#+BEGIN_SRC emacs-lisp
+  (use-package tex-mode
+    :ensure t
+    :bind
+    ("M-C" . 'toggle-input-method)
+  )
+  ;latex-mode-map
 #+END_SRC
