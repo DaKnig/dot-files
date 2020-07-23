@@ -168,11 +168,18 @@ _best used with caps-ctrl_
     :bind
     ("C-'" . 'avy-goto-char))
 #+END_SRC
-* multi cursor (disabled)
+* multi cursor
 #+BEGIN_SRC emacs-lisp
-;  (use-package mark-multiple
-;    :ensure t
-;    :bind ("C->" . 'mark-next-like-this))
+  ;  (use-package mark-multiple
+  ;    :ensure t
+  ;    :bind ("C->" . 'mark-next-like-this))
+;  (use-package 'multiple-cursors-mode
+ ;   :ensure t
+;    :bind (("C->" . 'mc/mark-next-like-this) .
+ ;          ("C-<" . 'mc/mark-previous-like-this)))
+ (require 'multiple-cursors)
+ (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+ (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 #+END_SRC
 * window managing
 
@@ -239,12 +246,16 @@ defining a func that does the newline
 binding to Enter in python mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'python-mode-hook
-  (lambda ()
-    (local-set-key (kbd "<return>")  'my-python-newline))
-    (setq python-indent 4))
+	    (lambda ()
+	      (local-set-key (kbd "<return>")  'my-python-newline)
+	      (setq python-indent 4) ) )
+  (setq python-shell-interpreter "python3")
   ;(define-key python-mode-map (kbd "<return>") 'my-newline)
   ;  (define-key global-map (kbd "<return>") 'my-newline)
 #+END_SRC
+
+#+RESULTS:
+| t | (lambda nil (local-set-key (kbd <return>) (quote my-python-newline))) |
 
 * auto complete company
 ** setup company
