@@ -33,8 +33,6 @@
 ** use-package
 #+BEGIN_SRC emacs-lisp
   (eval-when-compile
-    ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  ;  (add-to-list 'load-path "<path where use-package is installed>")
     (require 'use-package))
   ;(use-package auto-package-update
   ;  :config
@@ -150,7 +148,10 @@ C-c '
 * theme - custom colors
 ** monokai
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'monokai t)
+  (use-package monokai-theme
+    :ensure t
+    :config (load-theme 'monokai t)
+  )
 #+END_SRC
 * beacon
 #+BEGIN_SRC emacs-lisp
@@ -218,30 +219,31 @@ _best used with caps-ctrl_
 *this assumes spaces only*
 defining a func that does the newline
 #+BEGIN_SRC emacs-lisp
-    (defun my-newline ()
-      "This gets down a line and keeps indentation. assumes spaces."
-      (interactive)
-      (let ((x
-	     (save-excursion
-	       (forward-line 0)
-	       (-(-
-		  (point)
-		  (cdr (cons (back-to-indentation) (point) )))))))
-	(newline)
-	(insert-char ?\s x)))
+  (defun my-newline ()
+    "This gets down a line and keeps indentation. assumes spaces."
+    (interactive)
+    (let ((x
+	   (save-excursion
+	     (forward-line 0)
+	     (-(-
+		(point)
+		(cdr (cons (back-to-indentation) (point) )))))))
+      (newline)
+      (insert-char ?\s x)))
 
-    (defun my-python-newline ()
-      "check char, do shit, then call check-colon on it"
-      (interactive)
+  (defun my-python-newline ()
+    "check char, do shit, then call check-colon on it"
+    (interactive)
+    (if (eq 0 (buffer-size (current-buffer)))
+	(newline)
       (backward-char)
       (let ((x (char-after)))
 	(forward-char)
 	(my-newline)
 	(insert-char ?\s (if (equal x ?:)
-	    4
-	    0)
-		     )))
-    
+			     4
+			   0)
+		     ))))
 #+END_SRC
 binding to Enter in python mode
 #+BEGIN_SRC emacs-lisp
@@ -258,7 +260,7 @@ binding to Enter in python mode
 | t | (lambda nil (local-set-key (kbd <return>) (quote my-python-newline))) |
 
 * auto complete company
-** setup company
+** setup company (disabled)
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
@@ -271,7 +273,7 @@ binding to Enter in python mode
     ;same as S-tab
   )
 #+END_SRC
-** irony (C/C++)
+** irony (C/C++) (disabled)
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
     :ensure t
@@ -284,8 +286,8 @@ binding to Enter in python mode
     :ensure t
     :config
     ;add c and c++ to it
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
+  ;  (add-hook 'c++-mode-hook 'irony-mode)
+  ;  (add-hook 'c-mode-hook 'irony-mode)
     ; start the clang server
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
@@ -303,6 +305,13 @@ binding to Enter in python mode
     (add-hook 'python-mode-hook 'anaconda-mode)
   )
 #+END_SRC
+
+* syntax checking flycheck
+#+BEGIN_SRC emacs-lisp
+  (require 'flycheck)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+
+#+END_SRC
 * vhdl setup
 #+BEGIN_SRC emacs-lisp
   (use-package vhdl-mode
@@ -310,6 +319,14 @@ binding to Enter in python mode
     :bind
     ("C-/" . 'vhdl-comment-uncomment-region)
   )
+#+END_SRC
+* Rust setup
+#+BEGIN_SRC emacs-lisp
+  (require 'rust-mode)
+  (add-hook 'rust-mode-hook
+	    (lambda () (setq indent-tabs-mode nil)))
+
+  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
 #+END_SRC
 * speedbar
 #+BEGIN_SRC emacs-lisp

@@ -10,8 +10,7 @@
  ;; If there is more than one, they won't work right.
  '(desktop-save-mode t)
  '(package-selected-packages
-   (quote
-    (latex-mode company-anaconda auto-package-update company-irony-c-headers irony company-irony company dashboard centaur-tabs beacon mark-multiple use-package buffer-expose avy monokai-theme))))
+   '(flycheck-rust flycheck bison-mode markdown-mode xkcd latex-extra yasnippet-snippets pdf-tools auctex yasnippet latex-mode company-anaconda auto-package-update company-irony-c-headers irony company-irony company dashboard centaur-tabs beacon mark-multiple use-package buffer-expose avy monokai-theme)))
 ;(custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
