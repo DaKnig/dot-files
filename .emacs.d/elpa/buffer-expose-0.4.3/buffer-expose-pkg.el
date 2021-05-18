@@ -1,0 +1,2 @@
+;;; Generated package description from /data/data/com.termux/files/home/.emacs.d/elpa/buffer-expose-0.4.3/buffer-expose.el  -*- no-byte-compile: t -*-
+(define-package "buffer-expose" "0.4.3" "Visual buffer switching using a window grid" '((emacs "25") (cl-lib "0.5")) :keywords '("convenience") :authors '(("Clemens Radermacher" . "clemera@posteo.net")) :maintainer '("Clemens Radermacher" . "clemera@posteo.net") :url "https://github.com/clemera/buffer-expose")
