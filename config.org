@@ -19,8 +19,8 @@
   1. Install an Emacs version that does support SSL and be safe.
   2. Remove this warning from your init file so you won't see it again."))
 	;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-	;(add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-	(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+	(add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+	;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
 	(when (< emacs-major-version 24)
 	  ;; For important compatibility libraries like cl-lib
 	  (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
@@ -171,16 +171,18 @@ _best used with caps-ctrl_
 #+END_SRC
 * multi cursor
 #+BEGIN_SRC emacs-lisp
-  ;  (use-package mark-multiple
-  ;    :ensure t
-  ;    :bind ("C->" . 'mark-next-like-this))
-;  (use-package 'multiple-cursors-mode
- ;   :ensure t
-;    :bind (("C->" . 'mc/mark-next-like-this) .
- ;          ("C-<" . 'mc/mark-previous-like-this)))
- (require 'multiple-cursors)
- (global-set-key (kbd "C->") 'mc/mark-next-like-this)
- (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    ;  (use-package mark-multiple
+    ;    :ensure t
+    ;    :bind ("C->" . 'mark-next-like-this))
+  ;  (use-package 'multiple-cursors-mode
+   ;   :ensure t
+  ;    :bind (("C->" . 'mc/mark-next-like-this) .
+   ;          ("C-<" . 'mc/mark-previous-like-this)))
+  (use-package multiple-cursors
+    :ensure t
+    :bind
+    ("C->" . 'mc/mark-next-like-this)
+    ("C-<" . 'mc/mark-previous-like-this))
 #+END_SRC
 * window managing
 
@@ -308,8 +310,8 @@ binding to Enter in python mode
 
 * syntax checking flycheck
 #+BEGIN_SRC emacs-lisp
-  (require 'flycheck)
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  (use-package flycheck
+    :hook (after-init-hook . global-flycheck-mode))
 
 #+END_SRC
 * vhdl setup
@@ -317,16 +319,17 @@ binding to Enter in python mode
   (use-package vhdl-mode
     :ensure t
     :bind
-    ("C-/" . 'vhdl-comment-uncomment-region)
-  )
+    ("C-/" . 'vhdl-comment-uncomment-region))
+
 #+END_SRC
 * Rust setup
 #+BEGIN_SRC emacs-lisp
-  (require 'rust-mode)
-  (add-hook 'rust-mode-hook
-	    (lambda () (setq indent-tabs-mode nil)))
+  (use-package rust-mode
+    :ensure t
+    :hook (rust-mode-hook . (lambda () (setq indent-tabs-mode nil)))
+    :bind (:map rust-mode-map
+		("C-c C-c" . rust-run)))
 
-  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
 #+END_SRC
 * speedbar
 #+BEGIN_SRC emacs-lisp
@@ -338,7 +341,6 @@ binding to Enter in python mode
   (use-package tex-mode
     :ensure t
     :bind
-    ("M-C" . 'toggle-input-method)
-  )
+    ("M-C" . 'toggle-input-method))
   ;latex-mode-map
 #+END_SRC
