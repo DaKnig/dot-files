@@ -1,0 +1,10 @@
+[user]
+	name = DaKnig
+	email = 37626476+DaKnig@users.noreply.github.com
+[core]
+	editor = nano
+	whitespace = -trailing-space,-space-before-tab
+[init]
+	defaultBranch = master
+[merge]
+    conflictstyle = diff3
