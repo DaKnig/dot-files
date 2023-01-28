@@ -76,7 +76,7 @@ C-c '
 #+END_SRC
 ** restore buffers
 #+BEGIN_SRC emacs-lisp
-  (desktop-save-mode 1)
+  (desktop-save-mode t)
 #+END_SRC
 * dashboard (proper startup page)
 #+BEGIN_SRC emacs-lisp
@@ -98,8 +98,9 @@ C-c '
   (setq c-default-style "linux")
   (setq tab-always-indent t)
   (setq indent-tabs-mode t)
-  (setq c-basic-offset 4)
   (setq tab-width 4)
+  (defvaralias 'c-basic-offset 'tab-width)
+
 #+END_SRC
 
 * custom keys
@@ -208,13 +209,11 @@ _best used with caps-ctrl_
 * tab
 *it is disabled*
 #+BEGIN_SRC emacs-lisp
-;  (use-package centaur-tabs
-;    :demand
-;    :config
-;    (centaur-tabs-mode t)
-;    :bind
-;    ("C-<tab>" . centaur-tabs-backward)
-;    ("C-S-<tab>" . centaur-tabs-forward))
+  (setq indent-tabs-mode nil) ; use spaces
+
+  (setq tab-width 4) ; tab = 4 spaces
+  (setq c-basic-offset 4)
+  (setq cperl-indent-level 4)
 #+END_SRC
 * custom indentation
 ** python
@@ -326,7 +325,10 @@ binding to Enter in python mode
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
     :ensure t
-    :hook (rust-mode-hook . (lambda () (setq indent-tabs-mode nil)))
+    :init
+    (setq indent-tabs-mode nil)
+    (setq tab-width 4)
+
     :bind (:map rust-mode-map
 		("C-c C-c" . rust-run)))
 
@@ -342,5 +344,14 @@ binding to Enter in python mode
     :ensure t
     :bind
     ("M-C" . 'toggle-input-method))
+  ;latex-mode-map
+#+END_SRC
+
+* C setup
+#+BEGIN_SRC emacs-lisp
+  (use-package cc-mode
+    :ensure t
+    :bind
+    ("C-/" . 'comment-or-uncomment-region))
   ;latex-mode-map
 #+END_SRC
