@@ -84,6 +84,23 @@ if [ -n "${BASH_VERSION-}" ] ; then
        fi
 fi
 
+PROMPT_COMMAND=precmd
+
+precmd() {
+	echo -n
+}
+
+preexec() {
+  if [ "$BASH_COMMAND" == "precmd" ]; then
+    COMMAND="${DIRSTACK[*]}"
+  else
+    COMMAND="$BASH_COMMAND"
+  fi
+
+  PRO_TITLE="\e]0;${HOSTNAME%%.*}: $COMMAND\a"
+  echo -ne "$PRO_TITLE"
+}
+
 #~/scripts/swap_home_end.sh
 alias gdb='gdb -q'
 alias make='make -j'
@@ -95,4 +112,4 @@ export PATH=$HOME/uxnroms/uxn/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export LESSHISTFILE=$XDG_CONFIG_HOME/lesshst
 export WINEPREFIX=$XDG_CONFIG_HOME/wine
-eval "$(thefuck --alias)"
+#eval "$(thefuck --alias)"
