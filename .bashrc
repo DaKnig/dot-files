@@ -106,10 +106,12 @@ alias gdb='gdb -q'
 alias make='make -j'
 alias rrr='rr record -n'
 alias hexdump='hexdump --canonical'
+alias xclip='xclip -selection clipboard'
 export XDG_CONFIG_HOME=$HOME/.config
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/uxnroms/uxn/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export LESSHISTFILE=$XDG_CONFIG_HOME/lesshst
 export WINEPREFIX=$XDG_CONFIG_HOME/wine
+export GIT_EXTERNAL_DIFF=difft
 #eval "$(thefuck --alias)"
