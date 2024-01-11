@@ -330,7 +330,7 @@ binding to Enter in python mode
     (setq tab-width 4)
 
     :bind (:map rust-mode-map
-		("C-c C-c" . rust-run)))
+	      ("C-c C-c" . rust-run)))
 
 #+END_SRC
 * speedbar
@@ -352,6 +352,56 @@ binding to Enter in python mode
   (use-package cc-mode
     :ensure t
     :bind
+    ("C-c C-f" . 'clang-format)
     ("C-/" . 'comment-or-uncomment-region))
+
+  (add-hook 'c-mode-hook (lambda () (smart-tabs-mode)))
+  (add-hook 'c-mode-hook (lambda () (setq tab-width 4)))
+  (add-hook 'c-mode-hook (lambda () (defvaralias 'c-basic-offset 'tab-width)))
+
   ;latex-mode-map
+#+END_SRC
+* C++ Setup
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook (lambda () (smart-tabs-mode)))
+  (add-hook 'c++-mode-hook (lambda () (setq tab-width 4)))
+  (add-hook 'c++-mode-hook (lambda () (defvaralias 'c-basic-offset 'tab-width)))
+#+END_SRC
+* ERC
+#+BEGIN_SRC emacs-lisp
+  (use-package erc
+    :custom
+    (erc-sasl-mechanism 'plain)
+    :commands (chat.libera)
+    :config
+    (add-to-list 'erc-modules 'sasl)
+    (erc-update-modules)
+    (setq erc-hide-list '("JOIN" "PART" "QUIT"))
+    (defun chat.libera ()
+      (interactive)
+      (erc-tls
+       :server "irc.libera.chat"
+       :port 6697
+       :nick "DaKnig"
+       :user "DaKnig"
+       :password
+       (auth-source-pass-get 'secret "chat.libera/DaKnig")
+       )))
+
+  (defun gb-bridge-nicks ()
+    "returns the list of people behind bridge who spoke so far"
+    (interactive)
+    (let* ((lines
+	    (s-split "\n" (buffer-substring-no-properties (point-min)
+							  (point-max))))
+	   (nicks (mapcar
+		   '(lambda (line)
+		      (if (string-match "<gb-bridge> <\\([^>]+\\)>" line)
+			  (match-string 1 line)
+			nil))
+		   lines))
+	   (filtered (seq-filter '(lambda (line) line) nicks))
+	   (sorted (sort filtered 'string<))
+	   (unique (seq-uniq sorted)))
+      unique))
 #+END_SRC
