@@ -111,7 +111,10 @@ export XDG_CONFIG_HOME=$HOME/.config
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/uxnroms/uxn/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$PATH:$HOME/tools/alive2/build/
 export LESSHISTFILE=$XDG_CONFIG_HOME/lesshst
 export WINEPREFIX=$XDG_CONFIG_HOME/wine
 export GIT_EXTERNAL_DIFF=difft
 #eval "$(thefuck --alias)"
+
+alias emacs=emacs-gtk+x11
